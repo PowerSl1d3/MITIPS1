@@ -53,6 +53,27 @@ google.visualization.Histogram(document.getElementById
 google.visualization.Histogram(document.getElementById
                 ('histogram_leaving'));
                 chart2.draw(data2, options2);
+
+                var data = google.visualization.arrayToDataTable([
+                  ['Дней до текущего дня', 'Пришедшие люди', 'Ушедшие 
+люди'],
+                  {% for index, income_people in incoming_people_per_week 
+%}
+                    ['{{index}}', {{income_people}}, 
+{{leaving_people_per_week[index]}}],
+                  {% endfor %}
+                ]);
+
+                var options = {
+                  title: 'Статстика пришедших/ушедших людей',
+                  hAxis: {title: 'Дней до текущей даты',  titleTextStyle: 
+{color: '#333'}},
+                  vAxis: {minValue: 0}
+                };
+
+                var chart = new 
+google.visualization.AreaChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
              }
             google.charts.setOnLoadCallback(drawChart);
          </script>
@@ -77,6 +98,13 @@ auto;">
 "%.2f"|format(mean_people_per_week) }} </div>
                 <div><i><b>Среднее количество людей за месяц:</b></i> {{ 
 "%.2f"|format(mean_people_per_month) }} </div>
+            </div>
+            <div class="col-4" style="margin-left: auto; margin-right: 
+auto;">
+                <div><i><b>Количество пришедших людей за сегодня:</b></i> 
+{{ day_income_people }} </div>
+                <div><i><b>Количество ушедших людей за сегодня:</b></i> {{ 
+day_leave_people }} </div>
             </div>
         </div>
         <hr>
